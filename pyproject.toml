@@ -17,6 +17,10 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+dependencies = [
+    "dagster>=1.10.20",
+    "dagster-webserver>=1.10.20",
+]
 
 [project.urls]
 Homepage = "https://rachemelendres.github.io/dlt-dbt-dagster/"
