@@ -20,6 +20,7 @@ classifiers = [
 dependencies = [
     "dagster>=1.10.20",
     "dagster-webserver>=1.10.20",
+    "dlt[snowflake]>=1.12.1",
 ]
 
 [project.urls]
