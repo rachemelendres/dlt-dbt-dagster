@@ -42,27 +42,32 @@ def spacex_api_source(year: int, month: int) -> Any:
             "base_url": BASE_URL,
         },
         "resource_defaults": {
-            "primary_key": ["id", "year", "month"],
-            "merge_key": ["year", "month"],
-            "columns": {"date_utc": {"dedup_sort": "desc"}},
-            "write_disposition": "merge",
+            "endpoint": {
+                "method": "POST",
+                "json": {
+                    "options": {"limit": 50},
+                },
+                "data_selector": "docs[*]",
+                "paginator": {
+                    "type": "page_number",
+                    "base_page": 1,
+                    "page_param": "page",
+                    "total_path": "totalDocs",
+                },
+            },
         },
         "resources": [
             {
+                "primary_key": ["id"],
+                "merge_key": ["year", "month"],
+                "columns": {"date_utc": {"dedup_sort": "desc"}},
+                "write_disposition": "merge",
                 "name": "bronze_launches",
                 "endpoint": {
                     "path": ENDPOINTS["launches"],
-                    "method": "POST",
                     "json": {
                         "query": {"date_utc": {"$gte": start_date, "$lt": end_date}},
                         "options": {"limit": 50},
-                    },
-                    "data_selector": "docs[*]",
-                    "paginator": {
-                        "type": "page_number",
-                        "base_page": 1,
-                        "page_param": "page",
-                        "total_path": "totalDocs",
                     },
                 },
                 "processing_steps": [
