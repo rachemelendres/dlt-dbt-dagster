@@ -6,6 +6,7 @@ import dlt
 from dlt.sources.rest_api import RESTAPIConfig, rest_api_resources
 from dotenv import load_dotenv
 
+from dlt_dbt_dagster.constants.endpoints import BASE_URL, ENDPOINTS
 from dlt_dbt_dagster.utils.processing_utils import add_year_month, get_month_range, keep_specific_columns
 
 load_dotenv()
@@ -38,7 +39,7 @@ def spacex_api_source(year: int, month: int) -> Any:
     start_date, end_date = get_month_range(year, month)
     rest_api_config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://api.spacexdata.com/v4/",
+            "base_url": BASE_URL,
         },
         "resource_defaults": {
             "primary_key": ["id", "year", "month"],
@@ -50,7 +51,7 @@ def spacex_api_source(year: int, month: int) -> Any:
             {
                 "name": "bronze_launches",
                 "endpoint": {
-                    "path": "launches/query",
+                    "path": ENDPOINTS["launches"],
                     "method": "POST",
                     "json": {
                         "query": {"date_utc": {"$gte": start_date, "$lt": end_date}},
