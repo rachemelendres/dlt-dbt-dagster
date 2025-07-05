@@ -7,6 +7,7 @@ from dlt.sources.rest_api import RESTAPIConfig, rest_api_resources
 from dotenv import load_dotenv
 
 from dlt_dbt_dagster.constants.endpoints import BASE_URL, ENDPOINTS
+from dlt_dbt_dagster.dlt.custom_paginator import CustomJsonPaginator
 from dlt_dbt_dagster.utils.processing_utils import add_year_month, get_month_range, keep_specific_columns
 
 load_dotenv()
@@ -28,6 +29,21 @@ LAUNCHES_SELECTED_COLUMNS = [
     "success",
 ]
 
+ROCKETS_SELECTED_COLUMNS = [
+    "id",
+    "name",
+    "description",
+    "company",
+    "type",
+    "active",
+    "stages",
+    "boosters",
+    "cost_per_launch",
+    "success_rate_pct",
+    "first_flight",
+    "country",
+]
+
 
 @dlt.source(
     name="spacex_api_source",
@@ -40,20 +56,19 @@ def spacex_api_source(year: int, month: int) -> Any:
     rest_api_config: RESTAPIConfig = {
         "client": {
             "base_url": BASE_URL,
+            "paginator": CustomJsonPaginator(),
         },
         "resource_defaults": {
+            "primary_key": "id",
+            "merge_key": "id",
+            "write_disposition": {"disposition": "merge", "strategy": "scd2"},
             "endpoint": {
                 "method": "POST",
                 "json": {
+                    "query": {},
                     "options": {"limit": 50},
                 },
                 "data_selector": "docs[*]",
-                "paginator": {
-                    "type": "page_number",
-                    "base_page": 1,
-                    "page_param": "page",
-                    "total_path": "totalDocs",
-                },
             },
         },
         "resources": [
@@ -74,7 +89,16 @@ def spacex_api_source(year: int, month: int) -> Any:
                     {"map": keep_specific_columns(columns_to_keep=LAUNCHES_SELECTED_COLUMNS)},  # type: ignore[typeddict-item]
                     {"map": add_year_month(year=year, month=month)},  # type: ignore[typeddict-item]
                 ],
-            }
+            },
+            {
+                "name": "bronze_rockets",
+                "endpoint": {
+                    "path": ENDPOINTS["rockets"],
+                },
+                "processing_steps": [
+                    {"map": keep_specific_columns(columns_to_keep=ROCKETS_SELECTED_COLUMNS)},  # type: ignore[typeddict-item]
+                ],
+            },
         ],
     }
     yield from rest_api_resources(rest_api_config)
