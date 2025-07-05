@@ -7,10 +7,11 @@ from dlt.sources.helpers.rest_client.paginators import BasePaginator
 class CustomJsonPaginator(BasePaginator):
     """Implements a custom paginator for the SpaceX API pipeline"""
 
-    def __init__(self, page_json_body: str = "page", initial_page: int = 1):
+    def __init__(self, initial_page: int = 1, options_key: str = "options", page_key: str = "page"):
         super().__init__()
-        self.page_json_body = page_json_body
         self.page = initial_page
+        self.options_key = options_key
+        self.page_key = page_key
 
     def init_request_json(self, request: Request) -> None:  # type: ignore[no-any-unimported]
         """Sets up the initial API request JSON body parameters"""
@@ -29,4 +30,9 @@ class CustomJsonPaginator(BasePaginator):
 
         if request.json is None:
             request.json = {}
-        request.json["options"][self.page_json_body] = self.page
+
+        # Ensure the `options` key exists
+        if self.options_key not in request.json:
+            request.json[self.options_key] = {}
+
+        request.json[self.options_key][self.page_key] = self.page
