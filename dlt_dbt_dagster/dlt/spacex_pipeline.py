@@ -1,3 +1,5 @@
+"""This script extracts SpaceX API data and loads it into a local DuckDB database. It's designed for local development and testing purposes only."""
+
 from typing import Any
 
 import dlt
@@ -73,13 +75,14 @@ def spacex_api_source(year: int, month: int) -> Any:
 
 
 def load_spacex_bronze_data(year: int, month: int) -> None:
-    """Load monthly SpaceX API bronze data to Snowflake"""
+    """Load monthly SpaceX API bronze data to DuckDB"""
 
     pipeline = dlt.pipeline(
-        pipeline_name="spacex_bronze_data",
-        destination="snowflake",
+        pipeline_name="spacex_api",
+        destination="duckdb",
         dataset_name="bronze",
         progress="log",
+        dev_mode=True,
     )
     load_info = pipeline.run(spacex_api_source(year=year, month=month))
     print(load_info)
