@@ -20,7 +20,7 @@ MONTH = 3
 @dlt.source(
     name="spacex_api_source",
     max_table_nesting=0,
-    schema_contract={"tables": "evolve", "columns": "discard_value", "data_type": "evolve"},
+    schema_contract={"tables": "evolve", "columns": "discard_value", "data_type": "freeze"},
 )
 def spacex_api_source(year: int, month: int) -> Any:
     """Make the SpaceX API source"""
@@ -84,6 +84,10 @@ def spacex_api_source(year: int, month: int) -> Any:
                 "name": BronzeSchema.PAYLOADS,
                 "endpoint": {
                     "path": Endpoints.PAYLOADS,
+                },
+                "columns": {
+                    "mass_kg": {"data_type": "double"},
+                    "lifespan_years": {"data_type": "double"},
                 },
                 "processing_steps": [
                     {"map": keep_specific_columns(columns_to_keep=BronzeSchema.get_columns(BronzeSchema.PAYLOADS))},  # type: ignore[typeddict-item]
