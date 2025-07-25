@@ -841,6 +841,7 @@ dependencies = [
     { name = "dbt-snowflake" },
     { name = "dlt", version = "1.12.1", source = { registry = "https://pypi.org/simple" }, extra = ["snowflake"], marker = "python_full_version < '3.9.2'" },
     { name = "dlt", version = "1.12.3", source = { registry = "https://pypi.org/simple" }, extra = ["snowflake"], marker = "python_full_version >= '3.9.2'" },
+    { name = "python-dotenv" },
 ]
 
 [package.dev-dependencies]
@@ -863,6 +864,7 @@ requires-dist = [
     { name = "dbt-core", specifier = ">=1.10.5" },
     { name = "dbt-snowflake", specifier = ">=1.10.0" },
     { name = "dlt", extras = ["snowflake"], specifier = ">=1.12.1" },
+    { name = "python-dotenv", specifier = ">=1.1.0" },
 ]
 
 [package.metadata.requires-dev]
