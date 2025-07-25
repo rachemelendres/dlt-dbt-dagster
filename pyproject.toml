@@ -113,3 +113,7 @@ ignore = [
 
 [tool.ruff.format]
 preview = true
+
+[tool.deptry.ignore_imports]
+# Dependencies used indirectly
+modules = ["dbt-core", "dbt-snowflake", "dagster-webserver"]
