@@ -114,6 +114,6 @@ ignore = [
 [tool.ruff.format]
 preview = true
 
-[tool.deptry.ignore_imports]
+[tool.deptry]
 # Dependencies used indirectly
-modules = ["dbt-core", "dbt-snowflake", "dagster-webserver"]
+ignore = ["dbt-core", "dbt-snowflake", "dagster-webserver"]
