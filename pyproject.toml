@@ -114,6 +114,5 @@ ignore = [
 [tool.ruff.format]
 preview = true
 
-[tool.deptry]
-# Dependencies used indirectly
-ignore = ["dbt-core", "dbt-snowflake", "dagster-webserver"]
+[tool.deptry.per_rule_ignores]
+DEP002 = ["dbt-core", "dbt-snowflake", "dagster-webserver"]
