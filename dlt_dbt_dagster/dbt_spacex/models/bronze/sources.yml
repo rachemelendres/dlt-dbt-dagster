@@ -1,0 +1,260 @@
+version: 2
+
+sources:
+  - name: bronze_spacex
+    description: "Raw SpaceX API data ingested by dlt - Bronze layer in medallion architecture"
+    database: "{{ var('source_database')[target.name] }}"
+    schema: bronze
+
+    tables:
+      - name: bronze_cores
+        description: "SpaceX rocket cores (reusable boosters) raw data"
+        columns:
+          - name: id
+            description: "Unique identifier for the core"
+            tests:
+              - not_null
+              - unique
+          - name: status
+            description: "Current status of the core (active, inactive, lost, etc.)"
+          - name: serial
+            description: "Serial number of the core"
+          - name: reuse_count
+            description: "Number of times this core has been reused"
+          - name: launches
+            description: "JSON array of launch IDs where this core was used"
+          - name: last_update
+            description: "Last update timestamp for this core"
+          - name: _dlt_load_id
+            description: "dlt load identifier"
+            tests:
+              - not_null
+          - name: _dlt_id
+            description: "dlt unique row identifier"
+            tests:
+              - not_null
+              - unique
+          - name: _dlt_valid_from
+            description: "dlt validity start timestamp"
+          - name: _dlt_valid_to
+            description: "dlt validity end timestamp"
+
+      - name: bronze_launches
+        description: "SpaceX launches raw data"
+        columns:
+          - name: id
+            description: "Unique identifier for the launch"
+            tests:
+              - not_null
+              - unique
+          - name: name
+            description: "Name of the launch mission"
+          - name: details
+            description: "Detailed description of the launch"
+          - name: flight_number
+            description: "Sequential flight number"
+          - name: launchpad
+            description: "ID of the launchpad used"
+          - name: date_utc
+            description: "Launch date and time in UTC"
+          - name: rocket
+            description: "ID of the rocket used"
+          - name: payloads
+            description: "JSON array of payload IDs"
+          - name: ships
+            description: "JSON array of ship IDs involved in the mission"
+          - name: cores
+            description: "JSON array of core IDs used in the launch"
+          - name: success
+            description: "Whether the launch was successful"
+          - name: year
+            description: "Year of the launch"
+            tests:
+              - not_null
+          - name: month
+            description: "Month of the launch"
+            tests:
+              - not_null
+          - name: _dlt_load_id
+            description: "dlt load identifier"
+            tests:
+              - not_null
+          - name: _dlt_id
+            description: "dlt unique row identifier"
+            tests:
+              - not_null
+              - unique
+
+      - name: bronze_launchpads
+        description: "SpaceX launchpad facilities raw data"
+        columns:
+          - name: id
+            description: "Unique identifier for the launchpad"
+            tests:
+              - not_null
+              - unique
+          - name: name
+            description: "Name of the launchpad"
+          - name: full_name
+            description: "Full official name of the launchpad"
+          - name: locality
+            description: "Local area where the launchpad is located"
+          - name: region
+            description: "Region where the launchpad is located"
+          - name: latitude
+            description: "Latitude coordinate of the launchpad"
+          - name: longitude
+            description: "Longitude coordinate of the launchpad"
+          - name: launch_attempts
+            description: "Total number of launch attempts from this pad"
+          - name: launch_successes
+            description: "Total number of successful launches from this pad"
+          - name: launches
+            description: "JSON array of launch IDs from this pad"
+          - name: rockets
+            description: "JSON array of rocket IDs that have used this pad"
+          - name: status
+            description: "Current operational status of the launchpad"
+          - name: details
+            description: "Additional details about the launchpad"
+          - name: timezone
+            description: "Timezone of the launchpad location"
+          - name: _dlt_load_id
+            description: "dlt load identifier"
+            tests:
+              - not_null
+          - name: _dlt_id
+            description: "dlt unique row identifier"
+            tests:
+              - not_null
+              - unique
+          - name: _dlt_valid_from
+            description: "dlt validity start timestamp"
+          - name: _dlt_valid_to
+            description: "dlt validity end timestamp"
+
+      - name: bronze_payloads
+        description: "SpaceX payloads raw data"
+        columns:
+          - name: id
+            description: "Unique identifier for the payload"
+            tests:
+              - not_null
+              - unique
+          - name: name
+            description: "Name of the payload"
+          - name: type
+            description: "Type of payload (satellite, cargo, etc.)"
+          - name: mass_kg
+            description: "Mass of the payload in kilograms"
+          - name: lifespan_years
+            description: "Expected lifespan of the payload in years"
+          - name: launch
+            description: "ID of the launch carrying this payload"
+          - name: reused
+            description: "Whether this payload was reused"
+          - name: manufacturers
+            description: "JSON array of payload manufacturers"
+          - name: customers
+            description: "JSON array of payload customers"
+          - name: nationalities
+            description: "JSON array of payload nationalities"
+          - name: orbit
+            description: "Target orbit for the payload"
+          - name: epoch
+            description: "Epoch timestamp for the payload"
+          - name: _dlt_load_id
+            description: "dlt load identifier"
+            tests:
+              - not_null
+          - name: _dlt_id
+            description: "dlt unique row identifier"
+            tests:
+              - not_null
+              - unique
+          - name: _dlt_valid_from
+            description: "dlt validity start timestamp"
+          - name: _dlt_valid_to
+            description: "dlt validity end timestamp"
+
+      - name: bronze_rockets
+        description: "SpaceX rocket specifications raw data"
+        columns:
+          - name: id
+            description: "Unique identifier for the rocket"
+            tests:
+              - not_null
+              - unique
+          - name: name
+            description: "Name of the rocket"
+          - name: description
+            description: "Description of the rocket"
+          - name: company
+            description: "Company that built the rocket"
+          - name: type
+            description: "Type of rocket"
+          - name: active
+            description: "Whether the rocket is currently active"
+          - name: stages
+            description: "Number of stages in the rocket"
+          - name: boosters
+            description: "Number of boosters"
+          - name: cost_per_launch
+            description: "Cost per launch in USD"
+          - name: success_rate_pct
+            description: "Success rate percentage"
+          - name: first_flight
+            description: "Date of first flight"
+          - name: country
+            description: "Country of origin"
+          - name: _dlt_load_id
+            description: "dlt load identifier"
+            tests:
+              - not_null
+          - name: _dlt_id
+            description: "dlt unique row identifier"
+            tests:
+              - not_null
+              - unique
+          - name: _dlt_valid_from
+            description: "dlt validity start timestamp"
+          - name: _dlt_valid_to
+            description: "dlt validity end timestamp"
+
+      - name: bronze_ships
+        description: "SpaceX ships used for recovery operations raw data"
+        columns:
+          - name: id
+            description: "Unique identifier for the ship"
+            tests:
+              - not_null
+              - unique
+          - name: name
+            description: "Name of the ship"
+          - name: type
+            description: "Type of ship (recovery, support, etc.)"
+          - name: active
+            description: "Whether the ship is currently active"
+          - name: mass_kg
+            description: "Mass of the ship in kilograms"
+          - name: year_built
+            description: "Year the ship was built"
+          - name: home_port
+            description: "Home port of the ship"
+          - name: model
+            description: "Model of the ship"
+          - name: launches
+            description: "JSON array of launch IDs where this ship was involved"
+          - name: _dlt_load_id
+            description: "dlt load identifier"
+            tests:
+              - not_null
+          - name: _dlt_id
+            description: "dlt unique row identifier"
+            tests:
+              - not_null
+              - unique
+          - name: _dlt_valid_from
+            description: "dlt validity start timestamp"
+          - name: _dlt_valid_to
+            description: "dlt validity end timestamp"
