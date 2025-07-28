@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: bronze_spacex
     description: "Raw SpaceX API data ingested by dlt - Bronze layer in medallion architecture"
-    database: "{{ var('source_database')[target.name] }}"
+    database: "{{ target.database }}"
     schema: bronze
 
     tables:
