@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: silver_rockets
+    description: "Cleaned and transformed SpaceX rocket data - Silver layer"
+    columns:
+      - name: id
+        description: "Unique identifier for the rocket"
+        tests:
+          - not_null
+          - unique
+
+      - name: name
+        description: "Name of the rocket (e.g., Falcon 9, Falcon Heavy)"
+        tests:
+          - not_null
+
+      - name: description
+        description: "Detailed description of the rocket"
+
+      - name: company
+        description: "Company that manufactured the rocket (typically SpaceX)"
+
+      - name: type
+        description: "Type classification of the rocket"
+
+      - name: active
+        description: "Whether the rocket is currently active in service"
+        tests:
+          - not_null
+
+      - name: stages
+        description: "Number of stages in the rocket"
+
+      - name: boosters
+        description: "Number of boosters attached to the rocket"
+
+      - name: cost_per_launch
+        description: "Cost per launch in USD"
+
+      - name: success_rate_pct
+        description: "Success rate percentage of launches"
+
+      - name: country
+        description: "Country where the rocket is manufactured/operated"
+
+      - name: first_flight_date
+        description: "Date of the rocket's first flight (cleaned from string format)"
+
+      - name: valid_from
+        description: "Start timestamp for this record version (SCD Type 2)"
+        tests:
+          - not_null
+
+      - name: valid_to
+        description: "End timestamp for this record version (SCD Type 2, null for current)"
+
+      - name: is_current_record
+        description: "Boolean flag indicating if this is the current active record"
+        tests:
+          - not_null
+
+      - name: source_load_id
+        description: "dlt load identifier for troubleshooting"
+        tests:
+          - not_null
+
+      - name: silver_load_timestamp
+        description: "Timestamp when this record was processed into the silver layer"
+        tests:
+          - not_null
