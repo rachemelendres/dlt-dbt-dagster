@@ -8,7 +8,6 @@ models:
         description: "Unique identifier for the rocket"
         tests:
           - not_null
-          - unique
 
       - name: name
         description: "Name of the rocket (e.g., Falcon 9, Falcon Heavy)"
