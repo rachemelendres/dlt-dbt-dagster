@@ -31,8 +31,6 @@ def spacex_api_source(year: int, month: int) -> Any:
             "paginator": CustomJsonPaginator(),
         },
         "resource_defaults": {
-            "primary_key": "id",
-            "merge_key": "id",
             "write_disposition": {"disposition": "merge", "strategy": "scd2"},
             "endpoint": {
                 "method": "POST",
@@ -45,10 +43,8 @@ def spacex_api_source(year: int, month: int) -> Any:
         },
         "resources": [
             {
-                "primary_key": ["id"],
                 "merge_key": ["year", "month"],
-                "columns": {"date_utc": {"dedup_sort": "desc"}},
-                "write_disposition": "merge",
+                "write_disposition": {"disposition": "merge", "strategy": "delete-insert"},
                 "name": BronzeSchema.LAUNCHES,
                 "endpoint": {
                     "path": Endpoints.LAUNCHES,
@@ -120,7 +116,7 @@ def load_spacex_bronze_data(year: int, month: int) -> None:
     """Load monthly SpaceX API bronze data to DuckDB"""
 
     pipeline = dlt.pipeline(
-        pipeline_name="spacex_api",
+        pipeline_name="dev",
         destination="duckdb",
         dataset_name="bronze",
         progress="log",
