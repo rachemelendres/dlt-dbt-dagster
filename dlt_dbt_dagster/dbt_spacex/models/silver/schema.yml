@@ -1,6 +1,46 @@
 version: 2
 
 models:
+  - name: silver_cores
+    description: "SpaceX rocket cores (reusable boosters) with transformations and data quality improvements"
+    columns:
+      - name: id
+        description: "Unique identifier for the core"
+        tests:
+          - not_null
+      - name: status
+        description: "Current status of the core (active, inactive, lost, etc.) in lowercase"
+        tests:
+          - not_null
+      - name: serial
+        description: "Serial number of the core"
+      - name: reuse_count
+        description: "Number of times this core has been reused"
+        tests:
+          - not_null
+      - name: launches
+        description: "JSON array of launch IDs where this core was used"
+      - name: last_update_timestamp
+        description: "Last update timestamp for this core converted to timestamp type"
+      - name: valid_from
+        description: "Timestamp when this record version became valid"
+        tests:
+          - not_null
+      - name: valid_to
+        description: "Timestamp when this record version became invalid (null if current)"
+      - name: is_current_record
+        description: "Flag indicating if this is the current version of the record"
+        tests:
+          - not_null
+      - name: source_load_id
+        description: "Original dlt load identifier"
+        tests:
+          - not_null
+      - name: silver_load_timestamp
+        description: "Timestamp when this record was processed in silver layer"
+        tests:
+          - not_null
+
   - name: silver_launchpads
     description: "SpaceX launchpad facilities - silver layer with transformations and data quality improvements"
     columns:
