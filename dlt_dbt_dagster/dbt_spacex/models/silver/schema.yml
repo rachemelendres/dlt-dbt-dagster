@@ -41,6 +41,70 @@ models:
         tests:
           - not_null
 
+  - name: silver_launches
+    description: "SpaceX launches with transformations and data quality improvements"
+    columns:
+      - name: id
+        description: "Unique identifier for the launch"
+        tests:
+          - not_null
+      - name: name
+        description: "Name of the launch mission"
+        tests:
+          - not_null
+      - name: details
+        description: "Detailed description of the launch"
+      - name: flight_number
+        description: "Sequential flight number"
+        tests:
+          - not_null
+      - name: launchpad
+        description: "ID of the launchpad used"
+        tests:
+          - not_null
+      - name: date_utc
+        description: "Launch date and time in UTC"
+        tests:
+          - not_null
+      - name: rocket
+        description: "ID of the rocket used"
+        tests:
+          - not_null
+      - name: payloads
+        description: "JSON array of payload IDs"
+      - name: ships
+        description: "JSON array of ship IDs involved in the mission"
+      - name: cores
+        description: "JSON array with details of core IDs used in the launch"
+      - name: success
+        description: "Whether the launch was successful"
+      - name: year
+        description: "Year of the launch"
+        tests:
+          - not_null
+      - name: month
+        description: "Month of the launch"
+        tests:
+          - not_null
+      - name: valid_from
+        description: "Timestamp when this record version became valid"
+        tests:
+          - not_null
+      - name: valid_to
+        description: "Timestamp when this record version became invalid (null if current)"
+      - name: is_current_record
+        description: "Flag indicating if this is the current version of the record"
+        tests:
+          - not_null
+      - name: source_load_id
+        description: "Original dlt load identifier"
+        tests:
+          - not_null
+      - name: silver_load_timestamp
+        description: "Timestamp when this record was processed in silver layer"
+        tests:
+          - not_null
+
   - name: silver_launchpads
     description: "SpaceX launchpad facilities - silver layer with transformations and data quality improvements"
     columns:
