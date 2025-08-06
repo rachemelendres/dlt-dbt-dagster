@@ -217,3 +217,58 @@ models:
         description: "Timestamp when this record was processed in silver layer"
         tests:
           - not_null
+
+  - name: silver_payloads
+    description: "SpaceX payloads with transformations and data quality improvements"
+    columns:
+      - name: id
+        description: "Unique identifier for the payload"
+        tests:
+          - not_null
+          - unique
+      - name: name
+        description: "Name of the payload"
+        tests:
+          - not_null
+      - name: type
+        description: "Type of payload (satellite, cargo, etc.) in lowercase"
+        tests:
+          - not_null
+      - name: mass_kg
+        description: "Mass of the payload in kilograms"
+      - name: lifespan_years
+        description: "Expected lifespan of the payload in years"
+      - name: launch
+        description: "ID of the launch carrying this payload"
+        tests:
+          - not_null
+      - name: reused
+        description: "Whether this payload was reused (defaults to false if null)"
+      - name: manufacturers
+        description: "JSON array of payload manufacturers"
+      - name: customers
+        description: "JSON array of payload customers"
+      - name: nationalities
+        description: "JSON array of payload nationalities"
+      - name: orbit
+        description: "Target orbit for the payload in lowercase, 'N/A' if null"
+      - name: epoch
+        description: "Epoch timestamp for the payload"
+      - name: valid_from
+        description: "Timestamp when this record version became valid"
+        tests:
+          - not_null
+      - name: valid_to
+        description: "Timestamp when this record version became invalid (null if current)"
+      - name: is_current_record
+        description: "Flag indicating if this is the current version of the record"
+        tests:
+          - not_null
+      - name: source_load_id
+        description: "Original dlt load identifier"
+        tests:
+          - not_null
+      - name: silver_load_timestamp
+        description: "Timestamp when this record was processed in silver layer"
+        tests:
+          - not_null
