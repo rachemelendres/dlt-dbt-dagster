@@ -1,70 +1,131 @@
 version: 2
 
 models:
+  - name: silver_launchpads
+    description: "SpaceX launchpad facilities - silver layer with transformations and data quality improvements"
+    columns:
+      - name: id
+        description: "Unique identifier for the launchpad"
+        tests:
+          - not_null
+          - unique
+      - name: name
+        description: "Name of the launchpad"
+        tests:
+          - not_null
+      - name: full_name
+        description: "Full official name of the launchpad"
+        tests:
+          - not_null
+      - name: locality
+        description: "Local area where the launchpad is located"
+      - name: region
+        description: "Region where the launchpad is located"
+      - name: latitude
+        description: "Latitude coordinate of the launchpad"
+      - name: longitude
+        description: "Longitude coordinate of the launchpad"
+      - name: launch_attempts
+        description: "Total number of launch attempts from this pad"
+        tests:
+          - not_null
+      - name: launch_successes
+        description: "Total number of successful launches from this pad"
+        tests:
+          - not_null
+
+      - name: launches
+        description: "JSON array of launch IDs from this pad"
+      - name: rockets
+        description: "JSON array of rocket IDs that have used this pad"
+      - name: status
+        description: "Current operational status of the launchpad (lowercase)"
+        tests:
+          - not_null
+
+      - name: details
+        description: "Additional details about the launchpad"
+      - name: timezone
+        description: "Timezone of the launchpad location"
+
+      - name: valid_from
+        description: "Timestamp when this record version became valid"
+        tests:
+          - not_null
+      - name: valid_to
+        description: "Timestamp when this record version became invalid (null if current)"
+      - name: is_current_record
+        description: "Flag indicating if this is the current version of the record"
+        tests:
+          - not_null
+      - name: source_load_id
+        description: "Original dlt load identifier"
+        tests:
+          - not_null
+      - name: silver_load_timestamp
+        description: "Timestamp when this record was processed in silver layer"
+        tests:
+          - not_null
+
   - name: silver_rockets
-    description: "Cleaned and transformed SpaceX rocket data - Silver layer"
+    description: "SpaceX rocket specifications with transformations and data quality improvements"
     columns:
       - name: id
         description: "Unique identifier for the rocket"
         tests:
           - not_null
-
       - name: name
-        description: "Name of the rocket (e.g., Falcon 9, Falcon Heavy)"
+        description: "Name of the rocket"
         tests:
           - not_null
-
       - name: description
-        description: "Detailed description of the rocket"
-
+        description: "Description of the rocket"
       - name: company
-        description: "Company that manufactured the rocket (typically SpaceX)"
-
-      - name: type
-        description: "Type classification of the rocket"
-
-      - name: active
-        description: "Whether the rocket is currently active in service"
+        description: "Company that built the rocket"
         tests:
           - not_null
-
+      - name: type
+        description: "Type of rocket"
+      - name: active
+        description: "Whether the rocket is currently active"
+        tests:
+          - not_null
       - name: stages
         description: "Number of stages in the rocket"
-
+        tests:
+          - not_null
       - name: boosters
-        description: "Number of boosters attached to the rocket"
-
+        description: "Number of boosters"
+        tests:
+          - not_null
       - name: cost_per_launch
         description: "Cost per launch in USD"
-
       - name: success_rate_pct
-        description: "Success rate percentage of launches"
-
+        description: "Success rate percentage"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+              inclusive: true
       - name: country
-        description: "Country where the rocket is manufactured/operated"
-
+        description: "Country of origin"
       - name: first_flight_date
-        description: "Date of the rocket's first flight (cleaned from string format)"
-
+        description: "Date of first flight, converted to date type"
       - name: valid_from
-        description: "Start timestamp for this record version (SCD Type 2)"
+        description: "Timestamp when this record version became valid"
         tests:
           - not_null
-
       - name: valid_to
-        description: "End timestamp for this record version (SCD Type 2, null for current)"
-
+        description: "Timestamp when this record version became invalid (null if current)"
       - name: is_current_record
-        description: "Boolean flag indicating if this is the current active record"
+        description: "Flag indicating if this is the current version of the record"
         tests:
           - not_null
-
       - name: source_load_id
-        description: "dlt load identifier for troubleshooting"
+        description: "Original dlt load identifier"
         tests:
           - not_null
-
       - name: silver_load_timestamp
-        description: "Timestamp when this record was processed into the silver layer"
+        description: "Timestamp when this record was processed in silver layer"
         tests:
           - not_null
