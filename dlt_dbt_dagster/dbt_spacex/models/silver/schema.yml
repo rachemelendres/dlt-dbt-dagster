@@ -169,3 +169,51 @@ models:
         description: "Timestamp when this record was processed in silver layer"
         tests:
           - not_null
+
+  - name: silver_ships
+    description: "SpaceX ships used for recovery operations with transformations and data quality improvements"
+    columns:
+      - name: id
+        description: "Unique identifier for the ship"
+        tests:
+          - not_null
+      - name: name
+        description: "Name of the ship"
+        tests:
+          - not_null
+      - name: type
+        description: "Type of ship (recovery, support, etc.) in lowercase"
+        tests:
+          - not_null
+      - name: active
+        description: "Whether the ship is currently active"
+        tests:
+          - not_null
+      - name: mass_kg
+        description: "Mass of the ship in kilograms"
+      - name: year_built
+        description: "Year the ship was built"
+      - name: home_port
+        description: "Home port of the ship"
+      - name: model
+        description: "Model of the ship"
+      - name: launches
+        description: "JSON array of launch IDs where this ship was involved"
+      - name: valid_from
+        description: "Timestamp when this record version became valid"
+        tests:
+          - not_null
+      - name: valid_to
+        description: "Timestamp when this record version became invalid (null if current)"
+      - name: is_current_record
+        description: "Flag indicating if this is the current version of the record"
+        tests:
+          - not_null
+      - name: source_load_id
+        description: "Original dlt load identifier"
+        tests:
+          - not_null
+      - name: silver_load_timestamp
+        description: "Timestamp when this record was processed in silver layer"
+        tests:
+          - not_null
