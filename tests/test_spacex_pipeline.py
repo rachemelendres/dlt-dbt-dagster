@@ -71,9 +71,8 @@ class TestSpaceXPipeline:
         launches_resource = resources[0]
         assert launches_resource["name"] == BronzeSchema.LAUNCHES
         assert launches_resource["endpoint"]["path"] == Endpoints.LAUNCHES
-        assert launches_resource["primary_key"] == ["id"]
         assert launches_resource["merge_key"] == ["year", "month"]
-        assert launches_resource["write_disposition"] == "merge"
+        assert launches_resource["write_disposition"] == {"disposition": "merge", "strategy": "delete-insert"}
 
     @patch("dlt_dbt_dagster.dlt.spacex_pipeline.rest_api_resources")
     def test_spacex_api_source_date_range(self, mock_rest_api_resources: Mock) -> None:
@@ -129,7 +128,7 @@ class TestSpaceXPipeline:
 
         # Verify pipeline was created with correct parameters
         mock_pipeline_class.assert_called_once_with(
-            pipeline_name="spacex_api",
+            pipeline_name="dev",
             destination="duckdb",
             dataset_name="bronze",
             progress="log",
